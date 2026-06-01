@@ -11,7 +11,7 @@ dependencies = []
 packages = [{ include = "skeleton_package", from = "src" }]
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.0.0"
+pytest = "^9.0.3"
 pytest-cov = "^7.1.0"
 ruff = "^0.15.15"
 bandit = "^1.8.0"
