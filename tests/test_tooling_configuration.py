@@ -121,7 +121,8 @@ def test_ci_workflow_runs_the_validation_gate() -> None:
 
     assert "permissions:" in text
     assert "contents: read" in text
-    assert "cache: poetry" in text
+    assert "poetry env use" in text
+    assert "steps.setup-python.outputs.python-path" in text
     assert "make validate" in text
     assert "make package" in text
 

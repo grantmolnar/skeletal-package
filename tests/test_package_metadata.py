@@ -2,16 +2,27 @@
 
 from __future__ import annotations
 
+import re
 import tomllib
 
 from skeleton_package import __version__
 from tests.support.paths import PROJECT_ROOT
+
+_SEMVER_PATTERN = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 
 
 def test_package_version_matches_pyproject_metadata() -> None:
     pyproject = tomllib.loads((PROJECT_ROOT / "pyproject.toml").read_text(encoding="utf-8"))
 
     assert __version__ == pyproject["project"]["version"]
+
+
+def test_project_version_uses_plain_semantic_versioning() -> None:
+    pyproject = tomllib.loads((PROJECT_ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    version = pyproject["project"]["version"]
+
+    assert isinstance(version, str)
+    assert _SEMVER_PATTERN.fullmatch(version) is not None
 
 
 def test_required_documentation_stubs_exist() -> None:
