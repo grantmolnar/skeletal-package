@@ -46,8 +46,7 @@ make install
 
 ## Command philosophy
 
-The Makefile is organized around workflows, not synonyms. Each public target should either run a
-distinct tool or encode a distinct working loop:
+The Makefile supports the following workflows:
 
 - **setup**: install the package and default development tooling;
 - **daily loop**: format, type-check, and run the tests most likely to fail while editing;
