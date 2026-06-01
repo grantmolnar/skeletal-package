@@ -1,0 +1,216 @@
+[project]
+name = "skeleton-package"
+version = "0.1.0"
+description = "Reusable Python repository skeleton."
+authors = [{ name = "Your Name", email = "you@example.com" }]
+readme = "README.md"
+requires-python = ">=3.11,<4.0"
+dependencies = []
+
+[tool.poetry]
+packages = [{ include = "skeleton_package", from = "src" }]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-cov = "^6.0.0"
+ruff = "^0.9.0"
+bandit = "^1.8.0"
+pip-audit = "^2.10.0"
+pyright = { version = "^1.1.409", extras = ["nodejs"] }
+deptry = "^0.23.0"
+import-linter = "^2.0.0"
+hypothesis = "^6.0.0"
+mutmut = "^3.0.0"
+vulture = "^2.14"
+docstring-format-checker = "^1.6.0"
+radon = "^6.0.0"
+
+[tool.poetry.group.mlops]
+optional = true
+
+[tool.poetry.group.mlops.dependencies]
+mlflow = ">=3.0,<4.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = [
+    "--strict-config",
+    "--strict-markers",
+    "-ra",
+]
+markers = [
+    "architecture: static tests for dependency boundaries and entry-point contracts",
+    "smoke: broad import and command-line smoke tests",
+    "integration: component-level tests that exercise package boundaries without external services",
+    "external: tests that require network, services, credentials, or non-local infrastructure",
+    "property: property-based assertion style; organize these tests by feature/layer, not folder",
+    "slow: tests that are useful but too expensive for the default fast loop",
+]
+
+
+[tool.pyright]
+include = ["src", "tests", "scripts"]
+exclude = [
+    "**/__pycache__",
+    ".git",
+    ".hypothesis",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    "build",
+    "dist",
+    "htmlcov",
+    "mlartifacts",
+    "mlruns",
+    "mutants",
+    "node_modules",
+]
+extraPaths = ["src"]
+pythonVersion = "3.11"
+typeCheckingMode = "strict"
+reportMissingTypeStubs = "none"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests", "scripts"]
+exclude = [
+    ".git",
+    ".hypothesis",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    "build",
+    "dist",
+    "htmlcov",
+    "mlartifacts",
+    "mlruns",
+    "mutants",
+]
+
+[tool.ruff.format]
+docstring-code-format = true
+line-ending = "auto"
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint]
+select = [
+    "A",      # flake8-builtins
+    "ARG",    # flake8-unused-arguments
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "DTZ",    # flake8-datetimez
+    "E",      # pycodestyle errors
+    "ERA",    # eradicate commented-out code
+    "F",      # pyflakes
+    "FA",     # flake8-future-annotations
+    "I",      # isort
+    "ISC",    # flake8-implicit-str-concat
+    "N",      # pep8-naming
+    "PERF",   # perflint
+    "PIE",    # flake8-pie
+    "PL",     # pylint-derived rules
+    "PT",     # flake8-pytest-style
+    "PTH",    # flake8-use-pathlib
+    "RET",    # flake8-return
+    "RUF",    # Ruff-specific rules
+    "SIM",    # flake8-simplify
+    "T20",    # print statements
+    "BLE",    # blind except clauses
+    "UP",     # pyupgrade
+    "W",      # pycodestyle warnings
+]
+ignore = [
+    "PLR0913", # Too many arguments: useful, but frequently noisy at boundaries.
+    "PLR2004", # Magic values: often acceptable in tests and small pure functions.
+]
+fixable = ["ALL"]
+unfixable = ["ERA"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "ARG001", # pytest fixtures may appear unused by static analysis.
+    "PLR2004",
+]
+"scripts/**/*.py" = [
+    "T201", # scripts may intentionally print user-facing status.
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["skeleton_package"]
+
+[tool.coverage.run]
+branch = true
+source = ["skeleton_package"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+skip_covered = true
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]
+
+[tool.deptry]
+extend_exclude = ["docs"]
+known_first_party = ["skeleton_package"]
+ignore_notebooks = true
+
+[tool.importlinter]
+root_package = "skeleton_package"
+include_external_packages = true
+exclude_type_checking_imports = true
+
+[[tool.importlinter.contracts]]
+id = "clean-architecture-layers"
+name = "Clean architecture dependency direction"
+type = "layers"
+layers = [
+    "skeleton_package.interfaces | skeleton_package.infrastructure",
+    "skeleton_package.application",
+    "skeleton_package.domain",
+]
+
+[tool.mutmut]
+source_paths = ["src/skeleton_package"]
+pytest_add_cli_args_test_selection = ["tests"]
+mutate_only_covered_lines = true
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+recursive = true
+
+[tool.dfc]
+
+[[tool.dfc.sections]]
+order = 1
+name = "summary"
+type = "free_text"
+admonition = "note"
+prefix = "!!!"
+required = true
+
+[[tool.dfc.sections]]
+order = 2
+name = "params"
+type = "list_name_and_type"
+required = false
+
+[[tool.dfc.sections]]
+order = 3
+name = "returns"
+type = "list_name_and_type"
+required = false
+
+[[tool.dfc.sections]]
+order = 4
+name = "raises"
+type = "list_type"
+required = false

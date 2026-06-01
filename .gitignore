@@ -1,0 +1,47 @@
+# Python bytecode and package artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
+.venv/
+node_modules/
+venv/
+node_modules/
+
+# Test, coverage, type-checking, linting, and mutation caches
+.cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.hypothesis/
+.pytest_cache/
+.pyre/
+.ruff_cache/
+.tox/
+.nox/
+.mutmut-cache/
+mutants/
+
+# Optional local MLflow tracking artifacts
+mlruns/
+mlartifacts/
+
+# IDEs/editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+!.env.example
