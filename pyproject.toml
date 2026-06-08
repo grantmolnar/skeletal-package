@@ -20,7 +20,7 @@ pyright = { version = "^1.1.409", extras = ["nodejs"] }
 deptry = "^0.25.1"
 import-linter = "^2.0.0"
 hypothesis = "^6.0.0"
-mutmut = "^3.0.0"
+mutmut = "^3.6.0"
 vulture = "^2.14"
 docstring-format-checker = "^1.6.0"
 radon = "^6.0.0"
